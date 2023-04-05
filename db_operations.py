@@ -14,25 +14,37 @@ class db_operations():
         print("Connection made...")
 
     def create_database_tables(self):
+        # Creates rider table
         query = '''
-        CREATE TABLE songs(
-            songID VARCHAR(22) NOT NULL PRIMARY KEY,
-            Name VARCHAR(20),
-            Artist VARCHAR(20),
-            Album VARCHAR(20),
-            releaseDate DATETIME,
-            Genre VARCHAR(20),
-            Explicit BOOLEAN,
-            Duration DOUBLE,
-            Energy DOUBLE,
-            Danceability DOUBLE,
-            Acousticness DOUBLE,
-            Liveness DOUBLE,
-            Loudness DOUBLE
+        CREATE TABLE riders(
+            riderID VARCHAR(22) NOT NULL PRIMARY KEY
         );
         '''
         self.cursor.execute(query)
-        print("Table Created")
+
+        # Creates driver table
+        query2 = '''
+        CREATE TABLE drivers(
+            driverID VARCHAR(22) NOT NULL PRIMARY KEY,
+            driverRating DOUBLE,
+            driverMode VARCHAR(20)
+        );
+        '''
+        self.cursor.execute(query2)
+
+        # Creates ride table
+        query3 = '''
+        CREATE TABLE rides(
+            rideID VARCHAR(22) NOT NULL PRIMARY KEY,
+            driverID VARCHAR(22) NOT NULL,
+            riderID VARCHAR(22) NOT NULL,
+            pickupLocation VARCHAR(40),
+            dropoffLocation VARCHAR(40)
+        );
+        '''
+        self.cursor.execute(query3)
+
+        print("Tables Created")
 
     # function to retrieve a single value from a table
     def single_record(self, query):

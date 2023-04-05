@@ -1,4 +1,4 @@
 # RideShareAssignment
 
-###Joan Karstrom 
-####Karstrom@chapman.edu
+### Joan Karstrom 
+#### Karstrom@chapman.edu

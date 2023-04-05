@@ -13,7 +13,7 @@ class db_operations():
         self.cursor = self.connection.cursor()
         print("Connection made...")
 
-    def create_songs_table(self):
+    def create_database_tables(self):
         query = '''
         CREATE TABLE songs(
             songID VARCHAR(22) NOT NULL PRIMARY KEY,

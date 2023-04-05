@@ -14,17 +14,17 @@ class db_operations():
         print("Connection made...")
 
     def create_database_tables(self):
-        # Creates rider table
+        # Creates rider table with riderID as Primary Key
         query = '''
-        CREATE TABLE riders(
+        CREATE TABLE Riders(
             riderID VARCHAR(22) NOT NULL PRIMARY KEY
         );
         '''
         self.cursor.execute(query)
 
-        # Creates driver table
+        # Creates driver table with driverID as Primary Key
         query2 = '''
-        CREATE TABLE drivers(
+        CREATE TABLE Drivers(
             driverID VARCHAR(22) NOT NULL PRIMARY KEY,
             driverRating DOUBLE,
             driverMode VARCHAR(20)
@@ -32,12 +32,12 @@ class db_operations():
         '''
         self.cursor.execute(query2)
 
-        # Creates ride table
+        # Creates ride table with rideID as Primary key and both driverID and riderID as Foreign Keys
         query3 = '''
-        CREATE TABLE rides(
+        CREATE TABLE Rides(
             rideID VARCHAR(22) NOT NULL PRIMARY KEY,
-            driverID VARCHAR(22) NOT NULL,
-            riderID VARCHAR(22) NOT NULL,
+            driverID VARCHAR(22) NOT NULL REFERENCES Drivers(driverID),
+            riderID VARCHAR(22) NOT NULL REFERENCES Riders(riderID),
             pickupLocation VARCHAR(40),
             dropoffLocation VARCHAR(40)
         );

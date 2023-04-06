@@ -57,6 +57,12 @@ class db_operations():
         self.connection.commit()
         print("query executed...")
 
+    # function for updating records
+    def update(self,query):
+        self.cursor.execute(query)
+        self.connection.commit()
+        print("query executed..")
+
     # function that returns the values of a single attribute
     def single_attribute(self, query):
         self.cursor.execute(query)

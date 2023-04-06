@@ -28,6 +28,9 @@ def createNewUser():
         # Continuously ask the user to input an ID until the ID is verified to be unique
         while id_set == False:
             userID = input("Please input a unique ID that will be used for the Driver account: ")
+            if len(userID) > 22:
+                print("User ID is too long. Try again.")
+                continue
             # Query to check if inputted ID exists in Drivers table
             driver_check_query = '''
             SELECT COUNT(*)
@@ -72,6 +75,9 @@ def createNewUser():
         # Continuously ask the user to input an ID until the ID is verified to be unique
         while id_set == False:
             userID = input("Please input a unique ID that will be used for the Rider account: ")
+            if len(userID) > 22:
+                print("User ID is too long. Try again.")
+                continue
             # Query to check if inputted ID exists in Drivers table
             driver_check_query = '''
             SELECT COUNT(*)
@@ -106,6 +112,9 @@ def returningUser():
     user_type = -1
     while user_type == -1:
         curUser = input("What is your userID?")
+        if len(curUser) > 22:
+                print("User ID is longer than any currently existing ID. Try again.")
+                continue
         # Using userID find if user is rider or driver then call either userDriver() or userRider()
         # Query to check if inputted ID exists in Drivers table
         driver_check_query = '''

@@ -22,30 +22,124 @@ def createNewUser():
     2. Driver
     ''')
     user_choice = helper.get_choice([1,2])
+    # User is a driver
     if user_choice == 1:
         id_set = False
+        # Continuously ask the user to input an ID until the ID is verified to be unique
         while id_set == False:
-            userID = input("Please input a unique ID: ")
-            check_query = '''
+            userID = input("Please input a unique ID that will be used for the Driver account: ")
+            # Query to check if inputted ID exists in Drivers table
+            driver_check_query = '''
             SELECT COUNT(*)
             FROM Drivers
             WHERE riderID := '%s'
             '''
-            result = db_ops.single_record(check_query % userID)
-            if result == 0:
+            driver_result = db_ops.single_record(driver_check_query % userID)
+
+            # Query to check if inputted ID exists in Riders table
+            rider_check_query = '''
+            SELECT COUNT(*)
+            FROM Drivers
+            WHERE riderID := '%s'
+            '''
+            rider_result = db_ops.single_record(rider_check_query % userID)
+
+            # If the user's inputted ID is truly unique, proceed
+            if driver_result == 0 and rider_result == 0:
                 id_set = True
                 break
-            if result != 0:
+            else:
                 print("Id already exists within driver database. Try again.")
-    query = "" #creates a new instance of a user
-    #return to the main menu
+                continue
+        
+        # Ask user whether they are currently accepting rides or not
+        print('''Are you currently able to drive and are accepting ride requests?
+        1 - Yes
+        0 - No
+        ''')
+        availability = helper.get_choice([1,0])
+        insert_query = "INSERT INTO Drivers VALUES(?,?,?)"
+        if availability == 1:
+            driver_data = [userID, "0.0", "Active"]
+        else:
+            driver_data = [userID, "0.0", "Inactive"]
+        # Add driver to the database
+        db_ops.update_table(insert_query, driver_data)
 
-#finds if the returning user is a rider or driver
+    # User is a rider
+    else:
+        id_set = False
+        # Continuously ask the user to input an ID until the ID is verified to be unique
+        while id_set == False:
+            userID = input("Please input a unique ID that will be used for the Rider account: ")
+            # Query to check if inputted ID exists in Drivers table
+            driver_check_query = '''
+            SELECT COUNT(*)
+            FROM Drivers
+            WHERE riderID := '%s'
+            '''
+            driver_result = db_ops.single_record(driver_check_query % userID)
+
+            # Query to check if inputted ID exists in Riders table
+            rider_check_query = '''
+            SELECT COUNT(*)
+            FROM Drivers
+            WHERE riderID := '%s'
+            '''
+            rider_result = db_ops.single_record(rider_check_query % userID)
+
+            # If the user's inputted ID is truly unique, proceed
+            if driver_result == 0 and rider_result == 0:
+                id_set = True
+                break
+            else:
+                print("Id already exists within driver database. Try again.")
+                continue
+        insert_query = "INSERT INTO Riders VALUES(?)"
+        rider_data = [userID]
+        # Add rider to the database
+        db_ops.update_table(insert_query, rider_data)
+    # Return to the main menu
+
+# Finds if the returning user is a rider or driver
 def returningUser():
-    curUser = input("What is your userID?")
-    #using userID find if user is rider or driver then call either userDriver() or userRider()
-    id_query = '''
-    '''
+    user_type = -1
+    while user_type == -1:
+        curUser = input("What is your userID?")
+        # Using userID find if user is rider or driver then call either userDriver() or userRider()
+        # Query to check if inputted ID exists in Drivers table
+        driver_check_query = '''
+            SELECT COUNT(*)
+            FROM Drivers
+            WHERE riderID := '%s'
+        '''
+        driver_result = db_ops.single_record(driver_check_query % curUser)
+        if driver_result != 0:
+            user_type = 0
+            break
+
+        # Query to check if inputted ID exists in Riders table
+        rider_check_query = '''
+            SELECT COUNT(*)
+            FROM Drivers
+            WHERE riderID := '%s'
+        '''
+        rider_result = db_ops.single_record(rider_check_query % curUser)
+        if rider_result != 0:
+            user_type = 1
+            break
+
+        if driver_result == 0 and rider_result == 0:
+            print("User ID could not be found from Driver and Rider tables. Try again.")
+            continue
+
+    # Once user type has been found, bring the user to their appropriate menu.
+    if user_type == 0:
+        userDriver(curUser)
+    if user_type == 1:
+        userRider(curUser)
+
+
 
 #options for driver users
 def userDriver(userID):

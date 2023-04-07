@@ -10,7 +10,7 @@ class db_operations():
                                auth_plugin='mysqlnative_password',
                                database="RideShare"
                                )
-        self.cursor = self.connection.cursor()
+        self.cursor = self.conn.cursor()
         print("Connection made...")
 
     def create_database_tables(self):

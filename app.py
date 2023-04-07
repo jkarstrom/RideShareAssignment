@@ -38,9 +38,9 @@ def createNewUser():
         availability = helper.get_choice([1,0])
         insert_query = "INSERT INTO Drivers VALUES(?,?,?)"
         if availability == 1:
-            driver_data = [userID, "0.0", "Active"]
+            driver_data = [(userID, 0.0, "Active")]
         else:
-            driver_data = [userID, "0.0", "Inactive"]
+            driver_data = [(userID, 0.0, "Inactive")]
         # Add driver to the database
         db_ops.update_table(insert_query, driver_data)
         print("Your driverID is: ", userID, ". Make sure to remember this!")
@@ -54,7 +54,7 @@ def createNewUser():
         rider_count = db_ops.single_record(count_query)
         userID = "r"+str(rider_count + 1)
         insert_query = "INSERT INTO Riders VALUES(?)"
-        rider_data = [userID]
+        rider_data = [(userID)]
         # Add rider to the database
         db_ops.update_table(insert_query, rider_data)
         print("Your riderID is: ", userID, ". Make sure to remember this!")
@@ -196,7 +196,7 @@ def userRider(userID):
 
             # Add new ride instance to Ride Table
             insert_query = "INSERT INTO Drivers VALUES(?,?,?,?,?)"
-            ride_data = [rideID, driver_id, userID, pickUp, dropOff]
+            ride_data = [(rideID, driver_id, userID, pickUp, dropOff)]
             db_ops.update_table(insert_query, ride_data)
 
         if user_choice == 3: #rating the last driver
@@ -311,7 +311,7 @@ def userRider(userID):
             # Driver currently has a rating
             else:
                 new_rating = float((float(currRating) + float(rating)) / float(2.0))
-                update_data = [new_rating, driver_id]
+                update_data = [(new_rating, driver_id)]
             
             # Update driver's rating
             db_ops.update_table(update_query, update_data)

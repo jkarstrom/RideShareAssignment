@@ -23,7 +23,7 @@ def createNewUser():
     ''')
     user_choice = helper.get_choice([1,2])
     # User is a driver
-    if user_choice == 1:
+    if user_choice == 2:
         count_query = '''
         SELECT COUNT(DISTINCT driverID)
         FROM Drivers

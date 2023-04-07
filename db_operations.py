@@ -39,7 +39,9 @@ class db_operations():
             driverID VARCHAR(22) NOT NULL REFERENCES Drivers(driverID),
             riderID VARCHAR(22) NOT NULL REFERENCES Riders(riderID),
             pickupLocation VARCHAR(40),
-            dropoffLocation VARCHAR(40)
+            dropoffLocation VARCHAR(40),
+            FOREIGN KEY (driverID) REFERENCES Drivers(driverID),
+            FOREIGN KEY (riderID) REFERENCES Riders(riderID)
         );
         '''
         self.cursor.execute(query3)
